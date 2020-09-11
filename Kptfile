@@ -1,0 +1,45 @@
+apiVersion: kpt.dev/v1alpha1
+kind: Kptfile
+metadata:
+  name: Anthos environ sample package
+upstream:
+  type: git
+  git:
+    commit: f69f9135ab566f6ea69977cd6ea0f9af0408fe4f
+    repo: https://github.com/GoogleCloudPlatform/anthos-environ-samples
+    directory: /
+    ref: master
+openAPI:
+  definitions:
+    io.k8s.cli.setters.gcloud.core.project:
+      type: string
+      x-k8s-cli:
+        setter:
+          name: gcloud.core.project
+          value: cr-anthos-experimental
+          isSet: true
+    io.k8s.cli.setters.gcloud.project.projectNumber:
+      type: string
+      x-k8s-cli:
+        setter:
+          name: gcloud.project.projectNumber
+          value: "269308815265"
+          isSet: true
+    io.k8s.cli.substitutions.identity-namespace:
+      type: string
+      x-k8s-cli:
+        substitution:
+          name: identity-namespace
+          pattern: PROJECT_ID.svc.id.goog
+          values:
+          - marker: PROJECT_ID
+            ref: '#/definitions/io.k8s.cli.setters.gcloud.core.project'
+    io.k8s.cli.substitutions.mesh-id:
+      type: string
+      x-k8s-cli:
+        substitution:
+          name: mesh-id
+          pattern: proj-PROJECT_NUMBER
+          values:
+          - marker: PROJECT_NUMBER
+            ref: '#/definitions/io.k8s.cli.setters.gcloud.project.projectNumber'

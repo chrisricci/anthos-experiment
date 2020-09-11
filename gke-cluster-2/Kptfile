@@ -1,0 +1,34 @@
+apiVersion: kpt.dev/v1alpha1
+kind: Kptfile
+metadata:
+  name: Anthos sample package for GKE Cluster
+upstream:
+  type: git
+  git:
+    commit: f69f9135ab566f6ea69977cd6ea0f9af0408fe4f
+    repo: https://github.com/GoogleCloudPlatform/anthos-environ-samples
+    directory: /gke-cluster-1
+    ref: master
+openAPI:
+  definitions:
+    io.k8s.cli.setters.gcloud.container.cluster.location:
+      type: string
+      x-k8s-cli:
+        setter:
+          name: gcloud.container.cluster.location
+          value: us-west1-a
+          isSet: true
+    io.k8s.cli.setters.gcloud.container.cluster.name:
+      type: string
+      x-k8s-cli:
+        setter:
+          name: gcloud.container.cluster.name
+          value: gke-cluster-2
+          isSet: true
+    io.k8s.cli.setters.gcloud.container.nodepool.name:
+      type: string
+      x-k8s-cli:
+        setter:
+          name: gcloud.container.nodepool.name
+          value: us-nodepool-2
+          isSet: true
